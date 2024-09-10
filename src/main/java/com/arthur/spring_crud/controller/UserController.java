@@ -15,24 +15,36 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<String> addUser(@RequestBody User user) {
         userService.addUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body("User added successfully");
     }
 
-    @GetMapping
-    public ResponseEntity<?> getUsers(@RequestParam(value = "id", required = false) Integer id) {
-        if (id == null) {
-            // Retorna todos os usuários
-            List<User> users = userService.getUsers();
-            return ResponseEntity.ok(users);
-        } else {
-            // Retorna um usuário específico
-            User user = userService.getUser(id);
-            return ResponseEntity.ok(user);
-        }
+    @GetMapping("")
+    public ResponseEntity<?> getUsers() {
+        // Retorna todos os usuários
+        List<User> users = userService.getUsers();
+        return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUser(@PathVariable Integer id) {
+        // Retorna todos os usuários
+        User user = userService.getUser(id);
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateUser(@PathVariable Integer id, @RequestBody User user) {
+        userService.updateUser(id, user);
+        return ResponseEntity.ok("User updated successfully");
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Integer id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok("User deleted successfully");
+    }
 
 }
